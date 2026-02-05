@@ -1,18 +1,335 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Chào mừng đến với Web của tôi</title>
-    <style>
-        body { font-family: Arial; text-align: center; background-color: #f0f0f0; }
-        h1 { color: #333; }
-        .box { background: white; padding: 20px; border-radius: 10px; display: inline-block; margin-top: 50px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNT TOOLS HUB - Ultimate Cyber Interface</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+        /* --- VARIABLES & CORE SETUP --- */
+        :root {
+            --bg-dark: #050a0e; /* Nền đen sâu hơn */
+            --neon-green: #00ff41; /* Xanh lá hacker chuẩn */
+            --neon-blue: #00f3ff; /* Xanh dương cyber */
+            --text-primary: #e0f7ff;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-mono: 'Roboto Mono', monospace;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-mono);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- ADVANCED MATRIX BACKGROUND --- */
+        .matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            opacity: 0.8;
+        }
+        /* Lớp phủ mờ để làm nổi bật nội dung */
+        .overlay-vignette {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(5, 10, 14, 0.8) 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* --- CYBERPUNK HEADER --- */
+        header {
+            width: 100%;
+            padding: 30px 0;
+            text-align: center;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+            border-bottom: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Hiệu ứng quét sáng ngang header */
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+            animation: scanline 4s linear infinite;
+        }
+        @keyframes scanline { 0% { left: -100%; } 100% { left: 100%; } }
+
+        header h1 {
+            margin: 0;
+            font-family: var(--font-heading);
+            font-size: 3.5em;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--text-primary);
+            /* Hiệu ứng chữ phát sáng kép */
+            text-shadow: 
+                0 0 5px #fff,
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue),
+                0 0 40px var(--neon-blue);
+        }
+        .highlight-tnt { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green); }
+
+        /* --- NAVIGATION MENU (GLOWING) --- */
+        nav {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 10px;
+        }
+        nav a {
+            position: relative;
+            color: var(--neon-blue);
+            text-decoration: none;
+            padding: 12px 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            overflow: hidden;
+            border: 1px solid var(--neon-blue);
+            background: rgba(0, 243, 255, 0.05);
+            /* Hiệu ứng cắt góc */
+            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        }
+        nav a:hover {
+            background: var(--neon-blue);
+            color: var(--bg-dark);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.7);
+            text-shadow: none;
+        }
+
+        /* --- MAIN CONTAINER & ULTIMATE CARDS --- */
+        .container {
+            max-width: 900px;
+            padding: 50px 20px;
+            z-index: 2;
+        }
+
+        /* CYBER CARD - Giao diện viền đẹp nhất */
+        .cyber-card {
+            position: relative;
+            background: rgba(13, 19, 26, 0.8); /* Nền tối bán trong suốt */
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid transparent; /* Viền trong suốt để dành chỗ cho hiệu ứng */
+            backdrop-filter: blur(10px);
+            /* Hiệu ứng viền Neon thở (Breathing Neon) */
+            box-shadow: 
+                inset 0 0 20px rgba(0, 243, 255, 0.2), /* Sáng bên trong */
+                0 0 15px rgba(0, 255, 65, 0.4), /* Viền xanh lá gần */
+                0 0 30px rgba(0, 243, 255, 0.3); /* Viền xanh dương xa */
+            animation: neon-breath 3s ease-in-out infinite alternate;
+            
+            /* Cắt góc card */
+            clip-path: polygon(
+                0 0, 
+                calc(100% - 20px) 0, 
+                100% 20px, 
+                100% 100%, 
+                20px 100%, 
+                0 calc(100% - 20px)
+            );
+        }
+        /* Animation cho viền thở */
+        @keyframes neon-breath {
+            0% {
+                box-shadow: 
+                    inset 0 0 20px rgba(0, 243, 255, 0.2),
+                    0 0 10px rgba(0, 255, 65, 0.3),
+                    0 0 20px rgba(0, 243, 255, 0.2);
+                border-color: rgba(0, 255, 65, 0.5);
+            }
+            100% {
+                box-shadow: 
+                    inset 0 0 30px rgba(0, 243, 255, 0.4),
+                    0 0 25px rgba(0, 255, 65, 0.7), /* Sáng mạnh hơn */
+                    0 0 50px rgba(0, 243, 255, 0.6); /* Lan xa hơn */
+                border-color: var(--neon-blue);
+            }
+        }
+
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--neon-blue);
+            font-size: 2.2em;
+            margin-top: 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
+        }
+        .description { font-size: 1.1em; line-height: 1.7; color: #b8c7d1; }
+
+        /* --- GLOWING BUTTONS --- */
+        .cta-button {
+            position: relative;
+            display: inline-block;
+            margin-top: 25px;
+            padding: 15px 40px;
+            font-family: var(--font-heading);
+            font-weight: bold;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--bg-dark);
+            background: var(--neon-green);
+            border: none;
+            clip-path: polygon(15% 0, 100% 0, 100% 70%, 85% 100%, 0 100%, 0 30%);
+            transition: 0.3s;
+            /* Hiệu ứng nút phát sáng */
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.6);
+        }
+        
+        /* Nút chính (Zalo) */
+        .cta-button.primary {
+             background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+             box-shadow: 0 0 30px rgba(0, 255, 65, 0.5), 0 0 50px rgba(0, 243, 255, 0.5);
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(0, 255, 65, 1), 0 0 80px rgba(0, 243, 255, 0.8);
+            color: #fff;
+        }
+
+        /* --- FOOTER --- */
+        .footer {
+            width: 100%; padding: 30px; text-align: center;
+            background: rgba(0,0,0,0.8); border-top: 1px solid var(--neon-blue);
+            margin-top: auto; color: #7a8b99; z-index: 2;
+        }
+        .footer a { color: var(--neon-green); text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2em; }
+            .cyber-card { padding: 25px; }
+            nav a { padding: 10px 15px; font-size: 0.9em; }
+        }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>Chào mừng bạn!</h1>
-        <p>Đây là trang web chuyên nghiệp chạy trên GitHub của tôi.</p>
-        <p>Tôi đang phát triển các Bot Telegram và dự án AI.</p>
+
+    <canvas class="matrix-canvas" id="matrixCanvas"></canvas>
+    <div class="overlay-vignette"></div>
+
+    <header>
+        <h1><span class="highlight-tnt">TNT</span> TOOLS HUB</h1>
+        <p style="color: var(--neon-blue); letter-spacing: 2px; text-shadow: 0 0 10px var(--neon-blue);">/// SYSTEM ACCESS: GRANTED ///</p>
+    </header>
+
+    <nav>
+        <a href="#home">Dashboard</a>
+        <a href="https://zalo.me/g/zgbloo300" target="_blank" style="border-color: var(--neon-green); color: var(--neon-green);">Connect Zalo [JOIN]</a>
+        <a href="#tools">Database (Tools)</a>
+    </nav>
+
+    <div class="container">
+        <div class="cyber-card" id="home">
+            <h2>/// Welcome to the Mainframe</h2>
+            <p class="description">
+                [STATUS: ONLINE] <br>
+                Chào mừng bạn đã thâm nhập vào trung tâm chỉ huy của <strong>TNT Tools</strong>. 
+                Đây là điểm tập kết của những công nghệ tiên tiến nhất, nơi chúng tôi triển khai các 
+                Bot Telegram tự động hóa và chia sẻ các giải pháp "phi chính thống". 
+                Kết nối ngay để nhận quyền truy cập.
+            </p>
+            <a href="https://zalo.me/g/zgbloo300" target="_blank" class="cta-button primary">
+                >> THAM GIA NHÓM KÍN NGAY <<
+            </a>
+        </div>
+
+        <div class="cyber-card" id="tools">
+            <h2>/// Tool Database & Downloads</h2>
+            <p class="description">
+                [ACCESS: RESTRICTED] <br>
+                Kho dữ liệu công cụ đang trong quá trình giải mã và tải lên. 
+                Các file Bot và tiện ích sẽ sớm xuất hiện tại khu vực này. 
+                Hãy giữ kết nối!
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px;">
+                <div class="cta-button" style="background: transparent; border: 2px solid var(--neon-blue); color: var(--neon-blue); box-shadow: inset 0 0 20px rgba(0,243,255,0.3);">
+                    [ SYSTEM LOADING... ]
+                </div>
+            </div>
+        </div>
     </div>
+
+    <footer class="footer">
+        &copy; 2026 TNT SYSTEM. Encrypted Connection. | <a href="#">GitHub Secure Link</a>
+    </footer>
+
+    <script>
+        // --- NÂNG CẤP HIỆU ỨNG MATRIX (Sử dụng ký tự Nhật Bản - Katakana) ---
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        // Sử dụng ký tự Katakana cho cảm giác hacker "xịn" hơn
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン0123456789';
+        const characters = katakana.split('');
+        const fontSize = 16;
+        const columns = width / fontSize;
+        const drops = [];
+
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.random() * -100; // Bắt đầu rơi từ các độ cao khác nhau
+        }
+
+        function drawMatrix() {
+            // Tạo hiệu ứng vết mờ (trail effect)
+            ctx.fillStyle = 'rgba(5, 10, 14, 0.05)'; 
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.font = fontSize + 'px "Roboto Mono"';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = characters[Math.floor(Math.random() * characters.length)];
+                
+                // Thỉnh thoảng có ký tự màu trắng sáng để tạo điểm nhấn
+                if (Math.random() > 0.98) {
+                    ctx.fillStyle = '#fff';
+                } else {
+                    // Màu xanh hacker chủ đạo, có biến đổi nhẹ độ sáng
+                    const colorIntensity = Math.floor(Math.random() * 155) + 100; 
+                    ctx.fillStyle = `rgb(0, ${colorIntensity}, 65)`;
+                }
+                
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 30); // Tốc độ rơi
+
+        // Tự động chỉnh lại kích thước khi thay đổi cửa sổ
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+    </script>
+
 </body>
 </html>
